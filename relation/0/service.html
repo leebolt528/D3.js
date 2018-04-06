@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>关系依赖图(status)</title>
+    <link href="hbar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="blank" style="height:200px"></div>
+    <div style="height: 500px;background: #fbfbfb; border: 1px solid; width:1000px;margin-left:200px" id="canvas"></div>
+    <div class="blank" style="height:1000px"></div>
+    <script src='../../jquery.min.js'></script>
+    <script type="text/javascript" src="../../d3.min.js"></script>
+    <script type="text/javascript" src="service.js"></script>
+    <script type="text/javascript" src="data-service.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $.qunee("#canvas", data);
+    </script>
+</body>
+
+</html>
