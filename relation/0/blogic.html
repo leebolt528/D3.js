@@ -10,7 +10,7 @@
 
 <body>
     <div class="blank" style="height:200px"></div>
-    <div style="height: 500px;background: #fbfbfb; border: 1px solid; width:1000px;margin-left:200px" id="canvas"></div>
+    <div style="height: 500px;background: #fbfbfb; border: 1px solid; width:1000px;margin-left:200px;background: rgba(7,7,5,0.8);" id="canvas"></div>
     <div class="blank" style="height:1000px"></div>
     <script src='../../jquery.min.js'></script>
     <script type="text/javascript" src="../../d3.min.js"></script>
@@ -18,10 +18,18 @@
     <script type="text/javascript" src="data-blogic.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+        var object1={
+            lineColor:"#A9A9A9",
+            lineColor1:"#CC0000",
+            lineColor2:"#228B22",
+            clickColor:"#0099CC",
+            textColor:"#696969"
+        };
         $(function(){
             var data1=replaceId(data);
-            $.qunee("#canvas", data1);
+            $.qunee("#canvas", data1,object1);//object1参数可不传，将使用默认值
         })
+        //数据转化
         function replaceId(data){
             var i=0;
             var map=new Map();
@@ -37,6 +45,26 @@
             }
             return data;
         }
+        var resizeQunee=function(){
+            if(data.nodes.length>0){
+                $.qunee("#canvas",data,object1, false);
+            };
+        }
+        //如果画布的父类大小随窗口变化自适应需要重新绘图，防止连续变化窗口大小时进行多次数据请求和绘图
+        var debounce = function(idle, action){
+            var last
+            return function(){
+                var ctx = this, args = arguments
+                clearTimeout(last)
+                last = setTimeout(function(){
+                    action.apply(ctx, args)
+                }, idle)
+            }
+        }
+        var oneQunee=debounce(250,resizeQunee);
+        $(window).resize(function(){
+            oneQunee();
+        });
     </script>
 </body>
 

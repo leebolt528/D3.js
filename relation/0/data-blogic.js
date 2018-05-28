@@ -12,11 +12,11 @@ var data = {
         "image": "img/mysql.png",
         "key": "33"
     }, {
-        "name": "短信接口服务",
+        "name": "fdafafawefwaefwef",
         "image": "img/user.png",
         "key": "44"
     }, {
-        "name": "短信渠道",
+        "name": "USER",
         "image": "img/mysql.png",
         "key": "55"
     }, {
@@ -27,7 +27,7 @@ var data = {
     "edges": [{
         "source": "00",
         "target": "11",
-        "relation": "1718",
+        "relation": "17",
         "status": "fast"
     }, {
         "source": "00",
@@ -37,27 +37,27 @@ var data = {
     }, {
         "source": "22",
         "target": "44",
-        "relation": "1718",
+        "relation": "5",
         "status": "slow"
     }, {
         "source": "22",
         "target": "33",
-        "relation": "1718",
+        "relation": "24324234",
         "status": "slow"
     }, {
         "source": "33",
         "target": "55",
-        "relation": "1718",
+        "relation": "79",
         "status": "normal"
     }, {
         "source": "22",
         "target": "22",
-        "relation": "1718",
+        "relation": "354",
         "status": "slow"
     }, {
         "source": "55",
         "target": "33",
-        "relation": "1718",
+        "relation": "7718",
         "status": "slow"
     }]
 };

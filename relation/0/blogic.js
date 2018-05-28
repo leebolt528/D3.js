@@ -1,8 +1,20 @@
+var object2={
+    lineColor:"#A9A9A9",
+    lineColor1:"#CC0000",
+    lineColor2:"#228B22",
+    clickColor:"#0099CC",
+    textColor:"#696969"
+};
 $.extend({
     //把注释的代码放开即可实现缩放
-    qunee: function(id, root) {
+    qunee: function(id, root,object1) {
+        if(!object1){
+            object1={};
+        }
+        var object=$.extend({},object2,object1);
+        $("#canvas").empty();
         //定义一个画布
-          
+
         $("#canvas").append(`<div style="height:150px;width:700px;position:absolute;display:none;border-radius: 5px;background-color:#FFFFFF;box-shadow: 0px 0px 5px #888888;padding:0 8px 8px 8px;" class="drill drillDiv"></div>`);
 
         var downX = 0;
@@ -11,8 +23,7 @@ $.extend({
         var height = $(id).height();
         var img_w = 40;
         var img_h = 40;
-        var rect_w = 50;
-        var rect_h = 50;
+        var circleR=50
         var nodeClick = null;
         var lineClick=null;
         /*  var nofree = false;
@@ -35,34 +46,34 @@ $.extend({
                         if (d.source.key !== d.target.key) {
                             if (d.status == "fast") {
                                 d3.select(this).attr("marker-end", "url(#resolved6)");
-                                d3.select(this).style("stroke", "#228B22");
+                                d3.select(this).style("stroke", object.lineColor2);
                             } else if (d.status == "slow") {
                                 d3.select(this).attr("marker-end", "url(#resolved2)");
-                                d3.select(this).style("stroke", "#CC0000");
+                                d3.select(this).style("stroke", object.lineColor1);
                             } else {
                                 d3.select(this).attr("marker-end", "url(#resolved)");
-                                d3.select(this).style("stroke", "#A9A9A9");
+                                d3.select(this).style("stroke", object.lineColor);
                             }
                         } else {
                             if (d.status == "fast") {
                                 d3.select(this).attr("marker-end", "url(#resolved7)");
-                                d3.select(this).style("stroke", "#228B22");
+                                d3.select(this).style("stroke", object.lineColor2);
                             } else if (d.status == "slow") {
                                 d3.select(this).attr("marker-end", "url(#resolved5)");
-                                d3.select(this).style("stroke", "#CC0000");
+                                d3.select(this).style("stroke", object.lineColor1);
                             } else {
                                 d3.select(this).attr("marker-end", "url(#resolved3)");
-                                d3.select(this).style("stroke", "#A9A9A9");
+                                d3.select(this).style("stroke", object.lineColor);
                             }
                         }
                     });
                     edges_text.style("", function(d, i) {
                         if (d.status == "fast") {
-                            d3.select(this).style("fill", "#228B22");
+                            d3.select(this).style("fill", object.lineColor2);
                         } else if (d.status == "slow") {
-                            d3.select(this).style("fill", "#CC0000");
+                            d3.select(this).style("fill", object.lineColor1);
                         } else {
-                            d3.select(this).style("fill", "#A9A9A9");
+                            d3.select(this).style("fill", object.lineColor);
                         }
                     }); */
                 }
@@ -87,7 +98,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#A9A9A9')
+            .attr('stroke', object.lineColor)
             .attr("fill", "none"); //箭头颜色       
         var marker1 = //直+蓝
             defs.append("marker")
@@ -102,7 +113,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#0099CC')
+            .attr('stroke', object.clickColor)
             .attr("fill", "none"); //箭头颜色
         var marker2 = //直+红
             defs.append("marker")
@@ -117,7 +128,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#CC0000')
+            .attr('stroke', object.lineColor1)
             .attr("fill", "none"); //箭头颜色
         var marker3 = //环+灰
             defs.append("marker")
@@ -132,7 +143,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#A9A9A9')
+            .attr('stroke', object.lineColor)
             .attr("fill", "none") //箭头颜色
             .attr("transform", "rotate(30)");
         var marker4 = //环+蓝
@@ -148,7 +159,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#0099CC')
+            .attr('stroke', object.clickColor)
             .attr("fill", "none") //箭头颜色
             .attr("transform", "rotate(30)");
         var marker5 = //环+红
@@ -164,7 +175,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#CC0000')
+            .attr('stroke', object.lineColor1)
             .attr("fill", "none") //箭头颜色
             .attr("transform", "rotate(30)");
         var marker6 = //直+绿
@@ -180,7 +191,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#228B22')
+            .attr('stroke', object.lineColor2)
             .attr("fill", "none"); //箭头颜色
         var marker7 = //环+绿
             defs.append("marker")
@@ -195,7 +206,7 @@ $.extend({
             .attr("stroke-width", 1.5) //箭头宽度
             .append("path")
             .attr("d", "M0,-5L10,0L0,5") //箭头的路径
-            .attr('stroke', '#228B22')
+            .attr('stroke', object.lineColor2)
             .attr("fill", "none") //箭头颜色
             .attr("transform", "rotate(30)");
         //使用力导向图布局获取数据
@@ -234,11 +245,11 @@ $.extend({
                 "id": function(d, i) { return "edgepath" + i; },
                 "stroke": function(d, i) {
                     if (d.status == "fast") {
-                        return "#228B22";
+                        return object.lineColor2;
                     } else if (d.status == "slow") {
-                        return "#CC0000";
+                        return object.lineColor1;
                     } else {
-                        return "#A9A9A9";
+                        return object.lineColor;
                     }
                 },
                 "stroke-width": 1.5,
@@ -292,11 +303,11 @@ $.extend({
                 "id": function(d, i) { return "edgepath" + i; },
                 "fill": function(d, i) {
                     if (d.status == "fast") {
-                        return "#228B22";
+                        return object.lineColor2;
                     } else if (d.status == "slow") {
-                        return "#CC0000";
+                        return object.lineColor1;
                     } else {
-                        return "#A9A9A9";
+                        return object.lineColor;
                     }
                 },
                 "font-weight": 700
@@ -399,11 +410,14 @@ $.extend({
                     imageMouseout(image);
                 },
                 "click": function(image, i) {
+                    if(d3.event.defaultPrevented) {
+                		return;
+                	}
                     event.stopPropagation();
                     nodeClick = image.key;
                     lineClick=null;
                     imageClick(image);
-                    drillY = image.py - rect_h / 2 >= $(".drill").innerHeight() ? image.py - rect_w / 2 - $(".drill").innerHeight() - 4 + $("#canvas").offset().top : image.py + rect_w / 2 + 4 + $("#canvas").offset().top;
+                    drillY = image.py - circleR / 2 >= $(".drill").innerHeight() ? image.py - circleR / 2 - $(".drill").innerHeight() - 4 + $("#canvas").offset().top : image.py + circleR / 2 + 4 + $("#canvas").offset().top;
                     drillX = image.px < $(".drill").innerWidth() / 2 ? 4 + $("#canvas").offset().left : $("#canvas").width() - image.px < 350 ? $("#canvas").width() - $(".drill").innerWidth() - 4 + $("#canvas").offset().left : image.px - $(".drill").innerWidth() / 2 + $("#canvas").offset().left;
                     $(".drill").empty().html(nodeInfo(image));
                     $(".drill").css({ "top": drillY, "left": drillX });
@@ -427,24 +441,27 @@ $.extend({
             .attr({
                 "class": "nodetext",
                 "font-size": "14px",
-                "fill": "#696969",
-                "background":"#0099CC"
+                "fill": object.textColor
             })
             .attr(
                 " ",
                 function(d) {
                     var re_en = /[a-zA-Z]+/g;
                     //如果是全英文，不换行
-                    if (d.name.match(re_en)) {
+                    var overtop=(8-d.name.length)*50/8;
+                    if(/[A-Z]+/.test(d.name)){
+                        overtop=(5-d.name.length)*50/5;
+                    }
+                    if(d.name.match(re_en)){
                         d3.select(this).append('tspan')
-                            .attr('dx', -rect_w / 2)
-                            .attr('dy', img_h / 2)
-                            .text(function() { return d.name; });
+                            .attr('dx',-circleR/2+overtop/2)
+                            .attr('dy',(circleR-img_h)/2+12)
+                            .text(function(){return d.name;});
                     }
                     //如果小于四个字符，不换行
                     else if (d.name.length <= 4) {
                         d3.select(this).append('tspan')
-                            .attr('dx', -rect_w / 2)
+                            .attr('dx', -circleR / 2)
                             .attr('dy', img_h / 2)
                             .text(function() { return d.name; });
                     } else {
@@ -452,12 +469,12 @@ $.extend({
                         var bot = d.name.substring(4, d.name.length);
 
                         d3.select(this).append('tspan')
-                            .attr('dx', -rect_w / 2)
+                            .attr('dx', -circleR / 2)
                             .attr('dy', img_h / 2)
                             .text(function() { return top; });
 
                         d3.select(this).append('tspan')
-                            .attr('dx', -rect_w - 8)
+                            .attr('dx', -circleR - 8)
                             .attr('dy', 15)
                             .text(function() { return bot; });
                     }
@@ -494,10 +511,10 @@ $.extend({
             //限制结点的边界
             /* if (!nofree) { */
             root.nodes.forEach(function(d, i) {
-                d.x = d.x - rect_w / 2 - 2 < 0 ? rect_w / 2 + 2 : d.x;
-                d.x = d.x + rect_w / 2 + 50 > width ? width - rect_w / 2 - 50 : d.x;
-                d.y = d.y - rect_h / 2 - 7 < 0 ? rect_h / 2 + 7 : d.y;
-                d.y = d.y + rect_h / 2 + img_h > height ? height - rect_h / 2 - img_h : d.y;
+                d.x = d.x - circleR / 2 - 2 < 0 ? circleR / 2 + 2 : d.x;
+                d.x = d.x + circleR / 2 + 50 > width ? width - circleR / 2 - 50 : d.x;
+                d.y = d.y - circleR / 2 - 7 < 0 ? circleR / 2 + 7 : d.y;
+                d.y = d.y + circleR / 2 + img_h > height ? height - circleR / 2 - img_h : d.y;
             });
             /* } */
             //跟新连接线的位置
@@ -512,7 +529,8 @@ $.extend({
                 },
                 "stroke-dasharray": function(d) {
                     if (d.source.key !== d.target.key) {
-                        return Math.sqrt(Math.pow(Math.abs(d.source.x - d.target.x), 2) + Math.pow(Math.abs(d.source.y - d.target.y), 2)) / 2 + " " + 25 + " " + 1000;
+                        var numLength=d.relation.toString().length;
+                        return Math.sqrt(Math.pow(Math.abs(d.source.x - d.target.x), 2) + Math.pow(Math.abs(d.source.y - d.target.y), 2)) / 2 + " " + numLength*8 + " " + 1000;
                     } else {
                         return "90 20";
                     }
@@ -577,7 +595,7 @@ $.extend({
             edges_text.style("", function(d, i) {
                 if (d.source.key != nodeClick && d.target.key != nodeClick) {
                     if (image.key == d.source.key || image.key == d.target.key) {
-                        d3.select(this).style("fill", "#0099CC");
+                        d3.select(this).style("fill", object.clickColor);
                     }
                 }
             });
@@ -596,24 +614,24 @@ $.extend({
                 if (d.source.key !== d.target.key) {
                     if (d.status == "fast") {
                         d3.select(this).attr("marker-end", "url(#resolved6)");
-                        d3.select(this).style("stroke", "#228B22");
+                        d3.select(this).style("stroke", object.lineColor2);
                     } else if (d.status == "slow") {
                         d3.select(this).attr("marker-end", "url(#resolved2)");
-                        d3.select(this).style("stroke", "#CC0000");
+                        d3.select(this).style("stroke", object.lineColor1);
                     } else {
                         d3.select(this).attr("marker-end", "url(#resolved)");
-                        d3.select(this).style("stroke", "#A9A9A9");
+                        d3.select(this).style("stroke", object.lineColor);
                     }
                 } else {
                     if (d.status == "fast") {
                         d3.select(this).attr("marker-end", "url(#resolved7)");
-                        d3.select(this).style("stroke", "#228B22");
+                        d3.select(this).style("stroke", object.lineColor2);
                     } else if (d.status == "slow") {
                         d3.select(this).attr("marker-end", "url(#resolved5)");
-                        d3.select(this).style("stroke", "#CC0000");
+                        d3.select(this).style("stroke", object.lineColor1);
                     } else {
                         d3.select(this).attr("marker-end", "url(#resolved3)");
-                        d3.select(this).style("stroke", "#A9A9A9");
+                        d3.select(this).style("stroke", object.lineColor);
                     }
                 }
                 if(d==line){
@@ -622,25 +640,25 @@ $.extend({
                     } else {
                         d3.select(this).attr("marker-end", "url(#resolved4)");
                     }
-                    d3.select(this).style("stroke", "#0099CC");
+                    d3.select(this).style("stroke", object.clickColor);
                 }
             });
             edges_text.style("", function(d, i) {
                 if (d.status == "fast") {
-                    d3.select(this).style("fill", "#228B22");
+                    d3.select(this).style("fill", object.lineColor2);
                 } else if (d.status == "slow") {
-                    d3.select(this).style("fill", "#CC0000");
+                    d3.select(this).style("fill", object.lineColor1);
                 } else {
-                    d3.select(this).style("fill", "#A9A9A9");
+                    d3.select(this).style("fill", object.lineColor);
                 }
                 if(d==line){
-                    d3.select(this).style("fill", "#0099CC");
+                    d3.select(this).style("fill", object.clickColor);
                 }
             });
             nodes_text.style("",function(d,i){  
-                d3.select(this).style("fill", "#696969");
+                d3.select(this).style("fill", object.textColor);
                 if(d.key==line.target.key||d.key==line.source.key){
-                    d3.select(this).style("fill", "#0099CC");
+                    d3.select(this).style("fill", object.clickColor);
                 }
             });
         };
@@ -651,24 +669,24 @@ $.extend({
                     if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved6)");
-                            d3.select(this).style("stroke", "#228B22");
+                            d3.select(this).style("stroke", object.lineColor2);
                         } else if (d.status == "slow") {
                             d3.select(this).attr("marker-end", "url(#resolved2)");
-                            d3.select(this).style("stroke", "#CC0000");
+                            d3.select(this).style("stroke", object.lineColor1);
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved)");
-                            d3.select(this).style("stroke", "#A9A9A9");
+                            d3.select(this).style("stroke", object.lineColor);
                         }
                     } else {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved7)");
-                            d3.select(this).style("stroke", "#228B22");
+                            d3.select(this).style("stroke", object.lineColor2);
                         } else if (d.status == "slow") {
                             d3.select(this).attr("marker-end", "url(#resolved5)");
-                            d3.select(this).style("stroke", "#CC0000");
+                            d3.select(this).style("stroke", object.lineColor1);
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved3)");
-                            d3.select(this).style("stroke", "#A9A9A9");
+                            d3.select(this).style("stroke", object.lineColor);
                         }
                     }
                 }
@@ -681,24 +699,24 @@ $.extend({
                     if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved6)");
-                            d3.select(this).style("stroke", "#228B22");
+                            d3.select(this).style("stroke", object.lineColor2);
                         } else if (d.status == "slow") {
                             d3.select(this).attr("marker-end", "url(#resolved2)");
-                            d3.select(this).style("stroke", "#CC0000");
+                            d3.select(this).style("stroke", object.lineColor1);
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved)");
-                            d3.select(this).style("stroke", "#A9A9A9");
+                            d3.select(this).style("stroke", object.lineColor);
                         }
                     } else {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved7)");
-                            d3.select(this).style("stroke", "#228B22");
+                            d3.select(this).style("stroke", object.lineColor2);
                         } else if (d.status == "slow") {
                             d3.select(this).attr("marker-end", "url(#resolved5)");
-                            d3.select(this).style("stroke", "#CC0000");
+                            d3.select(this).style("stroke", object.lineColor1);
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved3)");
-                            d3.select(this).style("stroke", "#A9A9A9");
+                            d3.select(this).style("stroke", object.lineColor);
                         }
                     }
                     if (image.key == d.source.key || image.key == d.target.key) {
@@ -707,7 +725,7 @@ $.extend({
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved4)");
                         }
-                        d3.select(this).style("stroke", "#0099CC");
+                        d3.select(this).style("stroke", object.clickColor);
                     }
                 }
             });
@@ -716,20 +734,20 @@ $.extend({
             edges_text.style("", function(d, i) {
                 if (d.source.key != nodeClick && d.target.key != nodeClick&&d!=lineClick) {
                     if (d.status == "fast") {
-                        d3.select(this).style("fill", "#228B22");
+                        d3.select(this).style("fill", object.lineColor2);
                     } else if (d.status == "slow") {
-                        d3.select(this).style("fill", "#CC0000");
+                        d3.select(this).style("fill", object.lineColor1);
                     } else {
-                        d3.select(this).style("fill", "#A9A9A9");
+                        d3.select(this).style("fill", object.lineColor);
                     }
                 }
             });
         }
         var nodeStyle=function(image){
             nodes_text.style("",function(d,i){  
-                d3.select(this).style("fill", "#696969");
+                d3.select(this).style("fill", object.textColor);
                 if(d.key==image.key){
-                    d3.select(this).style("fill", "#0099CC");
+                    d3.select(this).style("fill", object.clickColor);
                 }
             });
         }
