@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>关系依赖图</title>
-    <link href="hbar.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
@@ -19,7 +18,25 @@
     <script type="text/javascript" src="data-blogic.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        $.qunee("#canvas", data);
+        $(function(){
+            var data1=replaceId(data);
+            $.qunee("#canvas", data1);
+        })
+        function replaceId(data){
+            var i=0;
+            var map=new Map();
+            if(data){
+            	data.nodes.map(function(value){
+                    map.set(value.key,i++);
+                });
+                data.edges.map(function(value){
+                    value.source=map.get(value.source);
+                    value.target=map.get(value.target);
+
+                });
+            }
+            return data;
+        }
     </script>
 </body>
 

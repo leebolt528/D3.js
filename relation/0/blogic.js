@@ -1,8 +1,10 @@
 $.extend({
     //把注释的代码放开即可实现缩放
     qunee: function(id, root) {
-        $("#canvas").html(`<div style="height:150px;width:700px;position:absolute;display:none;border-radius: 5px;background-color:#FFFFFF;box-shadow: 0px 0px 5px #888888;padding:0 8px 8px 8px;" class="drill drillDiv"></div>`);
         //定义一个画布
+          
+        $("#canvas").append(`<div style="height:150px;width:700px;position:absolute;display:none;border-radius: 5px;background-color:#FFFFFF;box-shadow: 0px 0px 5px #888888;padding:0 8px 8px 8px;" class="drill drillDiv"></div>`);
+
         var downX = 0;
         var downY = 0;
         var width = $(id).width();
@@ -12,6 +14,7 @@ $.extend({
         var rect_w = 50;
         var rect_h = 50;
         var nodeClick = null;
+        var lineClick=null;
         /*  var nofree = false;
          var zoom = d3.behavior.zoom()
              .scaleExtent([0.5, 10])
@@ -27,9 +30,9 @@ $.extend({
                 "click",
                 function(image, i) {
                     $(".drill").css("display", "none");
-                    nodeClick = null;
+                   /*  nodeClick = null;
                     edges_path.style("", function(d) {
-                        if (d.source.name !== d.target.name) {
+                        if (d.source.key !== d.target.key) {
                             if (d.status == "fast") {
                                 d3.select(this).attr("marker-end", "url(#resolved6)");
                                 d3.select(this).style("stroke", "#228B22");
@@ -61,7 +64,7 @@ $.extend({
                         } else {
                             d3.select(this).style("fill", "#A9A9A9");
                         }
-                    });
+                    }); */
                 }
             )
             /* .call(zoom) */
@@ -241,7 +244,7 @@ $.extend({
                 "stroke-width": 1.5,
                 "fill": "none",
                 "marker-end": function(d) {
-                    if (d.source.name !== d.target.name) {
+                    if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             return "url(#resolved6)";
                         } else if (d.status == "slow") {
@@ -266,6 +269,7 @@ $.extend({
             })
             .on("click", function(line, d) {
                 $(".drill").css("display", "none");
+                edgeClick(line);
                 event.stopPropagation();
                 var innerY = event.clientY - ($("#canvas").offset().top - $(document).scrollTop());
                 drillY = innerY >= $(".drill").innerHeight() ? innerY - $(".drill").innerHeight() + $("#canvas").offset().top : innerY + $("#canvas").offset().top;
@@ -307,6 +311,7 @@ $.extend({
             .on({
                 "click": function(text, d) {
                     $(".drill").css("display", "none");
+                    edgeClick(text);
                     event.stopPropagation();
                     var innerY = event.clientY - ($("#canvas").offset().top - $(document).scrollTop());
                     drillY = innerY >= $(".drill").innerHeight() ? innerY - $(".drill").innerHeight() + $("#canvas").offset().top : innerY + $("#canvas").offset().top;
@@ -395,7 +400,8 @@ $.extend({
                 },
                 "click": function(image, i) {
                     event.stopPropagation();
-                    nodeClick = image.name;
+                    nodeClick = image.key;
+                    lineClick=null;
                     imageClick(image);
                     drillY = image.py - rect_h / 2 >= $(".drill").innerHeight() ? image.py - rect_w / 2 - $(".drill").innerHeight() - 4 + $("#canvas").offset().top : image.py + rect_w / 2 + 4 + $("#canvas").offset().top;
                     drillX = image.px < $(".drill").innerWidth() / 2 ? 4 + $("#canvas").offset().left : $("#canvas").width() - image.px < 350 ? $("#canvas").width() - $(".drill").innerWidth() - 4 + $("#canvas").offset().left : image.px - $(".drill").innerWidth() / 2 + $("#canvas").offset().left;
@@ -421,7 +427,8 @@ $.extend({
             .attr({
                 "class": "nodetext",
                 "font-size": "14px",
-                "fill": "#696969"
+                "fill": "#696969",
+                "background":"#0099CC"
             })
             .attr(
                 " ",
@@ -497,14 +504,14 @@ $.extend({
             edges_path.attr({
                 "d": function(d, i) {
                     var d = edges_path1[i];
-                    if (d.source.name !== d.target.name) {
+                    if (d.source.key !== d.target.key) {
                         return "M" + d.source.x + " " + d.source.y + "Q" + (d.target.x + d.source.x + d.curve) / 2 + " " + (d.target.y + d.source.y + d.curve) / 2 + " " + d.target.x + " " + d.target.y;
                     } else {
                         return "M" + d.source.x + "," + d.source.y + "C" + d.source.x + "," + (d.source.y - 40) + " " + (d.source.x + 60) + "," + (d.source.y - 40) + " " + (d.source.x + 60) + "," + d.source.y + "S" + d.source.x + "," + (d.source.y + 40) + " " + d.source.x + "," + d.source.y;
                     }
                 },
                 "stroke-dasharray": function(d) {
-                    if (d.source.name !== d.target.name) {
+                    if (d.source.key !== d.target.key) {
                         return Math.sqrt(Math.pow(Math.abs(d.source.x - d.target.x), 2) + Math.pow(Math.abs(d.source.y - d.target.y), 2)) / 2 + " " + 25 + " " + 1000;
                     } else {
                         return "90 20";
@@ -538,7 +545,7 @@ $.extend({
             });
             edges_text.attr({
                 "dx": function(d, i) {
-                    if (d.source.name !== d.target.name) {
+                    if (d.source.key !== d.target.key) {
                         return Math.sqrt(Math.pow(Math.abs(d.source.x - d.target.x), 2) + Math.pow(Math.abs(d.source.y - d.target.y), 2)) / 2;
                     } else {
                         return 90;
@@ -546,7 +553,7 @@ $.extend({
                 },
                 "dy": 5,
                 "transform": function(d, i) {
-                    if (d.source.name !== d.target.name) {
+                    if (d.source.key !== d.target.key) {
                         if (d.target.x < d.source.x) {
                             bbox = this.getBBox();
                             rx = bbox.x + bbox.width / 2;
@@ -568,8 +575,8 @@ $.extend({
         function imageMouseover(image) {
             pathStyle(image);
             edges_text.style("", function(d, i) {
-                if (d.source.name != nodeClick && d.target.name != nodeClick) {
-                    if (image.name == d.source.name || image.name == d.target.name) {
+                if (d.source.key != nodeClick && d.target.key != nodeClick) {
+                    if (image.key == d.source.key || image.key == d.target.key) {
                         d3.select(this).style("fill", "#0099CC");
                     }
                 }
@@ -579,12 +586,69 @@ $.extend({
         function imageClick(image) {
             pathStyle(image);
             textStyle();
+            nodeStyle(image);
         }
+        //关系线点击事件
+        function edgeClick(line){
+            nodeClick = null;
+            lineClick=line;
+            edges_path.style("", function(d, i) {
+                if (d.source.key !== d.target.key) {
+                    if (d.status == "fast") {
+                        d3.select(this).attr("marker-end", "url(#resolved6)");
+                        d3.select(this).style("stroke", "#228B22");
+                    } else if (d.status == "slow") {
+                        d3.select(this).attr("marker-end", "url(#resolved2)");
+                        d3.select(this).style("stroke", "#CC0000");
+                    } else {
+                        d3.select(this).attr("marker-end", "url(#resolved)");
+                        d3.select(this).style("stroke", "#A9A9A9");
+                    }
+                } else {
+                    if (d.status == "fast") {
+                        d3.select(this).attr("marker-end", "url(#resolved7)");
+                        d3.select(this).style("stroke", "#228B22");
+                    } else if (d.status == "slow") {
+                        d3.select(this).attr("marker-end", "url(#resolved5)");
+                        d3.select(this).style("stroke", "#CC0000");
+                    } else {
+                        d3.select(this).attr("marker-end", "url(#resolved3)");
+                        d3.select(this).style("stroke", "#A9A9A9");
+                    }
+                }
+                if(d==line){
+                    if (d.source.key !== d.target.key) {
+                        d3.select(this).attr("marker-end", "url(#resolved1)");
+                    } else {
+                        d3.select(this).attr("marker-end", "url(#resolved4)");
+                    }
+                    d3.select(this).style("stroke", "#0099CC");
+                }
+            });
+            edges_text.style("", function(d, i) {
+                if (d.status == "fast") {
+                    d3.select(this).style("fill", "#228B22");
+                } else if (d.status == "slow") {
+                    d3.select(this).style("fill", "#CC0000");
+                } else {
+                    d3.select(this).style("fill", "#A9A9A9");
+                }
+                if(d==line){
+                    d3.select(this).style("fill", "#0099CC");
+                }
+            });
+            nodes_text.style("",function(d,i){  
+                d3.select(this).style("fill", "#696969");
+                if(d.key==line.target.key||d.key==line.source.key){
+                    d3.select(this).style("fill", "#0099CC");
+                }
+            });
+        };
         //鼠标划出事件
         function imageMouseout(image) {
             edges_path.style("", function(d) {
-                if (d.source.name != nodeClick && d.target.name != nodeClick) {
-                    if (d.source.name !== d.target.name) {
+                if (d.source.key != nodeClick && d.target.key != nodeClick&&d!=lineClick) {
+                    if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved6)");
                             d3.select(this).style("stroke", "#228B22");
@@ -613,8 +677,8 @@ $.extend({
         };
         var pathStyle = function(image) {
             edges_path.style("", function(d, i) {
-                if (d.source.name != nodeClick && d.target.name != nodeClick) {
-                    if (d.source.name !== d.target.name) {
+                if (d.source.key != nodeClick && d.target.key != nodeClick) {
+                    if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved6)");
                             d3.select(this).style("stroke", "#228B22");
@@ -637,8 +701,8 @@ $.extend({
                             d3.select(this).style("stroke", "#A9A9A9");
                         }
                     }
-                    if (image.name == d.source.name || image.name == d.target.name) {
-                        if (d.source.name !== d.target.name) {
+                    if (image.key == d.source.key || image.key == d.target.key) {
+                        if (d.source.key !== d.target.key) {
                             d3.select(this).attr("marker-end", "url(#resolved1)");
                         } else {
                             d3.select(this).attr("marker-end", "url(#resolved4)");
@@ -650,7 +714,7 @@ $.extend({
         }
         var textStyle = function() {
             edges_text.style("", function(d, i) {
-                if (d.source.name != nodeClick && d.target.name != nodeClick) {
+                if (d.source.key != nodeClick && d.target.key != nodeClick&&d!=lineClick) {
                     if (d.status == "fast") {
                         d3.select(this).style("fill", "#228B22");
                     } else if (d.status == "slow") {
@@ -658,6 +722,14 @@ $.extend({
                     } else {
                         d3.select(this).style("fill", "#A9A9A9");
                     }
+                }
+            });
+        }
+        var nodeStyle=function(image){
+            nodes_text.style("",function(d,i){  
+                d3.select(this).style("fill", "#696969");
+                if(d.key==image.key){
+                    d3.select(this).style("fill", "#0099CC");
                 }
             });
         }
