@@ -7,7 +7,11 @@ var object2={
 };
 $.extend({
     //把注释的代码放开即可实现缩放
-    qunee: function(id, root,object1) {
+    qunee: function(id, data,object1) {
+        var root=replaceId(data);
+        if(root.edges.length==1){
+            root.edges.push(root.edges[0]);
+        }
         if(!object1){
             object1={};
         }
@@ -750,6 +754,22 @@ $.extend({
                     d3.select(this).style("fill", object.clickColor);
                 }
             });
+        }
+        //数据转化
+        function replaceId(data){
+            var i=0;
+            var map=new Map();
+            if(data){
+            	data.nodes.map(function(value){
+                    map.set(value.key,i++);
+                });
+                data.edges.map(function(value){
+                    value.source=map.get(value.source);
+                    value.target=map.get(value.target);
+
+                });
+            }
+            return data;
         }
     }
 });

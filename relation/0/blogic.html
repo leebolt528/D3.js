@@ -26,25 +26,8 @@
             textColor:"#696969"
         };
         $(function(){
-            var data1=replaceId(data);
-            $.qunee("#canvas", data1,object1);//object1参数可不传，将使用默认值
+            $.qunee("#canvas", data,object1);//object1参数可不传，将使用默认值
         })
-        //数据转化
-        function replaceId(data){
-            var i=0;
-            var map=new Map();
-            if(data){
-            	data.nodes.map(function(value){
-                    map.set(value.key,i++);
-                });
-                data.edges.map(function(value){
-                    value.source=map.get(value.source);
-                    value.target=map.get(value.target);
-
-                });
-            }
-            return data;
-        }
         var resizeQunee=function(){
             if(data.nodes.length>0){
                 $.qunee("#canvas",data,object1, false);
