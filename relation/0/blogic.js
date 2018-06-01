@@ -699,7 +699,7 @@ $.extend({
         };
         var pathStyle = function(image) {
             edges_path.style("", function(d, i) {
-                if (d.source.key != nodeClick && d.target.key != nodeClick) {
+                if (d.source.key != nodeClick && d.target.key != nodeClick&&d!=lineClick) {
                     if (d.source.key !== d.target.key) {
                         if (d.status == "fast") {
                             d3.select(this).attr("marker-end", "url(#resolved6)");
